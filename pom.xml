@@ -18,6 +18,7 @@
 		<character.encoding>UTF-8</character.encoding>
 		<project.build.sourceEncoding>${character.encoding}</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>${character.encoding}</project.reporting.outputEncoding>
+		<spring.profiles.active>default</spring.profiles.active>
 		<spring-boot.version>3.0.6</spring-boot.version>
 		<lombok.version>1.18.24</lombok.version>
 		<mapstruct.version>1.5.3.Final</mapstruct.version>
@@ -47,6 +48,11 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.12.0</version>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
@@ -59,6 +65,34 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.0</version>
+				<configuration>
+					<includes>
+						<include>**/*Test*.java</include>
+					</includes>
+					<!-- illegal-access required by JDK11! -->
+					<argLine>
+						--illegal-access=permit
+					</argLine>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.22.0</version>
+				<!-- illegal-access required by JDK11! -->
+				<configuration>
+					<includes>
+						<include>**/*Test*.java</include>
+					</includes>
+					<argLine>
+						--illegal-access=permit
+					</argLine>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -69,13 +103,36 @@
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
+			<properties>
+				<spring.profiles.active>dev</spring.profiles.active>
+			</properties>
 		</profile>
-		<profile><id>dev</id></profile>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<spring.profiles.active>dev</spring.profiles.active>
+			</properties>
+		</profile>
 		<!--		Quality Assurance-->
-		<profile><id>qa</id></profile>
+		<profile>
+			<id>qa</id>
+			<properties>
+				<spring.profiles.active>qa</spring.profiles.active>
+			</properties>
+		</profile>
 		<!--		User Acceptance Testing-->
-		<profile><id>uat</id></profile>
-		<profile><id>prod</id></profile>
+		<profile>
+			<id>uat</id>
+			<properties>
+				<spring.profiles.active>uat</spring.profiles.active>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<spring.profiles.active>prod</spring.profiles.active>
+			</properties>
+		</profile>
 		<profile><id>deploy</id></profile>
 	</profiles>
 </project>
