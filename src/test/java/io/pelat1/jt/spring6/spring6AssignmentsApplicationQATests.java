@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles(value = {"prod"})
+@ActiveProfiles(value = {"qa"})
 @SpringBootTest
-class spring6AssignmentsApplicationTests {
+class spring6AssignmentsApplicationQATests {
 	@Autowired
 	FauxController fauxController;
 
